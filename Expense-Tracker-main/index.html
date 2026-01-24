@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Expense Tracker App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-gray-100 pb-24">
+    <!-- Header -->
+    <header
+      class="bg-blue-600 text-white p-4 text-center font-semibold text-lg"
+    >
+      Expense Tracker
+    </header>
+
+    <!-- Home -->
+    <section id="home-section" class="page-section p-4">
+      <section class="p-4">
+        <div
+          class="bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-2xl p-5 shadow-lg"
+        >
+          <p class="text-sm opacity-80">Total Balance</p>
+          <h1 id="balance" class="text-3xl font-bold mt-1">₹0</h1>
+        </div>
+      </section>
+
+      <!-- Income & Expense -->
+      <section class="px-4 grid grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl p-4 shadow">
+          <p class="text-sm text-gray-500">Income</p>
+          <h2 id="income" class="text-xl font-semibold text-green-500">₹0</h2>
+        </div>
+
+        <div class="bg-white rounded-xl p-4 shadow">
+          <p class="text-sm text-gray-500">Expenses</p>
+          <h2 id="expense" class="text-xl font-semibold text-red-500">₹0</h2>
+        </div>
+      </section>
+
+      <!-- Recent Transactions -->
+      <section class="p-4">
+        <h3 class="text-gray-700 font-semibold mb-3">Recent Transactions</h3>
+
+        <div
+          id="transaction-list"
+          class="bg-white rounded-xl shadow divide-y"
+        ></div>
+      </section>
+      <button
+        onclick="clearAllTransactions()"
+        class="w-full mt-4 py-2 rounded-lg bg-red-100 text-red-600 font-medium"
+      >
+        Clear All
+      </button>
+    </section>
+
+    <!-- Floating Add Button -->
+    <!-- <button
+      class="fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg text-3xl flex items-center justify-center"
+    >
+      +
+    </button> -->
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg">
+      <ul class="flex justify-around items-center h-16">
+        <!-- Home -->
+        <li class="nav-item active" data-tab="home">
+          <button class="nav-btn flex flex-col items-center gap-1">
+            <div class="icon-wrapper">
+              <svg
+                class="nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2z"
+                />
+              </svg>
+            </div>
+            <span class="nav-text text-xs">Home</span>
+          </button>
+        </li>
+
+        <!-- Add -->
+        <li class="nav-item" data-tab="add">
+          <button class="nav-btn flex flex-col items-center gap-1">
+            <div class="icon-wrapper">
+              <svg
+                class="nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+            </div>
+            <span class="nav-text text-xs">Add</span>
+          </button>
+        </li>
+
+        <!-- History -->
+        <li class="nav-item" data-tab="history">
+          <button class="nav-btn flex flex-col items-center gap-1">
+            <div class="icon-wrapper">
+              <svg
+                class="nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <span class="nav-text text-sm">History</span>
+          </button>
+        </li>
+
+        <!-- Stats -->
+        <li class="nav-item" data-tab="stats">
+          <button class="nav-btn flex flex-col items-center gap-1">
+            <div class="icon-wrapper">
+              <svg
+                class="nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 3v18m4-14v14m4-10v10"
+                />
+              </svg>
+            </div>
+            <span class="nav-text text-sm">Stats</span>
+          </button>
+        </li>
+
+        <!-- Profile -->
+        <li class="nav-item" data-tab="profile">
+          <button class="nav-btn flex flex-col items-center gap-1">
+            <div class="icon-wrapper">
+              <svg
+                class="nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5.121 17.804A9 9 0 1118.88 17.8M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </div>
+            <span class="nav-text text-sm">Profile</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Add transaction page code -->
+    <section id="add-section" class="page-section hidden p-4">
+      <h3 class="text-lg font-semibold mb-4 text-center">Add Transaction</h3>
+
+      <!-- Income / Expense Toggle -->
+      <div class="flex bg-gray-100 rounded-xl p-1 mb-4">
+        <button
+          id="income-btn"
+          onclick="setType('income')"
+          class="flex-1 py-2 rounded-lg font-medium bg-green-500 text-white"
+        >
+          Income
+        </button>
+        <button
+          id="expense-btn"
+          onclick="setType('expense')"
+          class="flex-1 py-2 rounded-lg font-medium text-gray-600"
+        >
+          Expense
+        </button>
+      </div>
+
+      <!-- Amount -->
+      <input
+        id="amount"
+        type="number"
+        inputmode="numeric"
+        class="w-full p-4 text-2xl text-center border rounded-xl mb-4 focus:outline-none"
+        placeholder="₹0"
+      />
+
+      <!-- Title -->
+      <input
+        id="title"
+        class="w-full p-3 border rounded-xl mb-4"
+        placeholder="Title (Salary, Food, Rent)"
+      />
+      <select
+        id="category"
+        class="w-full p-2 border rounded-lg mb-4 text-gray-500"
+      >
+        <option value="Food">Food</option>
+        <option value="Travel">Travel</option>
+        <option value="Shopping">Shopping</option>
+        <option value="Rent">Rent</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <!-- Submit -->
+      <button
+        onclick="addTransaction()"
+        class="w-full py-3 rounded-xl text-white font-semibold bg-blue-600"
+      >
+        Add Transaction
+      </button>
+    </section>
+
+    <!-- History page start -->
+    <section id="history-section" class="page-section hidden p-4">
+      <h3 class="text-lg font-semibold mb-4 text-center">
+        Transaction History
+      </h3>
+
+      <!-- Filters -->
+      <div class="bg-white rounded-xl shadow p-3 mb-4 space-y-3">
+        <!-- Search -->
+        <input
+          id="history-search"
+          type="text"
+          placeholder="Search by title..."
+          class="w-full p-2 border rounded-lg focus:outline-none"
+          oninput="renderHistory()"
+        />
+
+        <!-- Type Filter -->
+        <div class="flex gap-2">
+          <button
+            onclick="setHistoryFilter('all')"
+            class="history-filter-btn flex-1 py-2 rounded-lg bg-blue-600 text-white text-sm"
+            id="filter-all"
+          >
+            All
+          </button>
+          <button
+            onclick="setHistoryFilter('income')"
+            class="history-filter-btn flex-1 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm"
+            id="filter-income"
+          >
+            Income
+          </button>
+          <button
+            onclick="setHistoryFilter('expense')"
+            class="history-filter-btn flex-1 py-2 rounded-lg bg-gray-100 text-gray-700 text-sm"
+            id="filter-expense"
+          >
+            Expense
+          </button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        <!-- Header -->
+        <div
+          class="grid grid-cols-3 text-xs font-semibold text-gray-500 bg-gray-50 p-3"
+        >
+          <div class="text-left">Title</div>
+          <div class="text-center">Date</div>
+          <div class="text-right">Amount</div>
+        </div>
+
+        <!-- Rows -->
+        <div id="history-table" class="divide-y"></div>
+        <div
+          id="history-pagination"
+          class="flex justify-center gap-2 m-4"
+        ></div>
+      </div>
+    </section>
+    <!-- History page end -->
+
+    <!-- Stats page start  -->
+    <!-- Stats Section -->
+    <section id="stats-section" class="page-section hidden p-4 pb-20 space-y-4">
+      <!-- Header -->
+      <h2 class="text-lg font-semibold text-center">Statistics</h2>
+
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-white rounded-xl shadow p-3 text-center">
+          <p class="text-xs text-gray-500">Income</p>
+          <p id="stats-income" class="text-green-600 font-semibold">₹0</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-3 text-center">
+          <p class="text-xs text-gray-500">Expense</p>
+          <p id="stats-expense" class="text-red-600 font-semibold">₹0</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-3 text-center">
+          <p class="text-xs text-gray-500">Balance</p>
+          <p id="stats-balance" class="font-semibold text-gray-600">₹0</p>
+        </div>
+      </div>
+
+      <!-- Time Filter -->
+      <div class="flex gap-2 mb-4">
+        <button
+          id="stats-all"
+          class="stats-filter-btn bg-blue-600 text-white px-3 py-1 rounded-lg"
+          onclick="setStatsFilter('all')"
+        >
+          All
+        </button>
+
+        <button
+          id="stats-week"
+          class="stats-filter-btn bg-gray-100 px-3 py-1 rounded-lg"
+          onclick="setStatsFilter('week')"
+        >
+          Week
+        </button>
+
+        <button
+          id="stats-month"
+          class="stats-filter-btn bg-gray-100 px-3 py-1 rounded-lg"
+          onclick="setStatsFilter('month')"
+        >
+          Month
+        </button>
+
+        <button
+          id="stats-year"
+          class="stats-filter-btn bg-gray-100 px-3 py-1 rounded-lg"
+          onclick="setStatsFilter('year')"
+        >
+          Year
+        </button>
+      </div>
+
+      <!-- Income vs Expense Chart -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm font-medium mb-2">Income vs Expense</p>
+        <div
+          class="h-48 flex items-center justify-center text-gray-400 text-sm"
+        >
+          <canvas id="incomeExpenseChart" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Expense Breakdown -->
+      <div class="bg-white rounded-xl shadow p-4">
+        <p class="text-sm font-medium mb-2">Expense Breakdown</p>
+        <div
+          class="h-48 flex items-center justify-center text-gray-400 text-sm"
+        >
+          <canvas id="expenseChart" height="220"></canvas>
+        </div>
+      </div>
+
+      <!-- Insights -->
+      <div class="bg-white rounded-xl shadow p-4 space-y-2">
+        <p id="insight-1" class="text-sm text-gray-700"></p>
+        <p id="insight-2" class="text-sm text-gray-700"></p>
+      </div>
+    </section>
+
+    <!-- Stats page End -->
+
+    <!-- Profile page start  -->
+    <section id="profile-section" class="page-section hidden p-4">
+      <h3 class="font-semibold mb-3 text-center">Profile Page</h3>
+    </section>
+    <!-- Profile page start  -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
